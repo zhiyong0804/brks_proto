@@ -1,0 +1,77 @@
+syntax = "proto2";
+
+package tutorial;
+
+message rsponse_result
+{
+    required int32  code = 1;  //返回编码
+    required string msg  = 2;   //返回信息
+    optional string data = 3; //其他数据
+}
+
+message mobile_request
+{
+    required string mobile = 1;
+}
+
+message login_request
+{
+    required string mobile = 1;  // 手机号码
+    required int32  code   = 2;    // 验证码
+}
+
+message recharge_request
+{
+    required string mobile = 1;
+    required int32  amount = 2;    
+}
+
+message account_balance_request
+{
+    required string mobile = 1;
+}
+
+message account_balance_response
+{
+    required rsponse_result ret     = 1;
+    required int32          balance = 2;
+}
+
+message list_account_records_request
+{
+    required string mobile = 1;
+}
+
+message list_account_records_response
+{
+    required rsponse_result ret = 1;
+    message account_record
+    {
+        required int32  type      = 1; // 0 : 骑行消费,  1 : 充值, 2 : 退款
+        required int32  limit     = 2; // 消费或者充值金额
+        required uint64 timestamp = 3; // 记录发生时的时间戳
+    }
+    
+    repeated account_record records = 2;
+}
+
+message list_travel_records_request
+{
+    required string mobile = 1;
+}
+
+message list_travel_records_rsponse
+{
+    required rsponse_result ret = 1;
+    message travel_record
+    {
+        required uint64 stm      = 1;   // start timestamp
+        required uint32 duration = 2;   // 骑行时长
+        required uint32 amount   = 3;   // 所耗金额
+    }
+    
+    required double              mileage   = 2; // 里程
+    required double              discharge = 3; // 排放
+    required double              calorie   = 4; // 卡路里
+    repeated travel_record       records   = 5;
+}
